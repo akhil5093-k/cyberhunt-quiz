@@ -9,28 +9,41 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize Firebase and Auto-refresh
-(async () => {
+// Initialize Firebase (auto-refresh handled differently in serverless)
+let isInitialized = false;
+
+const initializeApp = async () => {
+  if (isInitialized) return;
+  
   try {
-    // Connect to Firebase first
     console.log('🔥 Initializing Firebase...');
     await connectDB();
     console.log('✅ Firebase connected successfully');
     
-    // Then run auto-refresh
-    console.log('🔄 Starting auto-refresh...');
-    await autoRefreshData();
-    console.log('✅ Auto-refresh completed successfully');
+    // For Vercel, we'll handle auto-refresh via API calls instead of server startup
+    if (process.env.VERCEL !== '1') {
+      console.log('🔄 Starting auto-refresh...');
+      await autoRefreshData();
+      console.log('✅ Auto-refresh completed successfully');
+    }
+    
+    isInitialized = true;
   } catch (error) {
     console.error('⚠️ Initialization failed:', error.message);
     console.error('⚠️ Server will continue but data may not be refreshed...');
   }
-})();
+};
+
+// Initialize on first request (for serverless)
+app.use(async (req, res, next) => {
+  await initializeApp();
+  next();
+});
 
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://your-frontend-domain.com' 
+    ? ['https://cyber-hunt-quiz.vercel.app', 'https://your-custom-domain.com']
     : 'http://localhost:3000',
   credentials: true
 }));
@@ -66,12 +79,13 @@ app.post('/api/refresh', async (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({
     success: true,
-    message: 'Quiz Competition API is running with auto-refresh!',
+    message: 'Cyber Hunt Quiz API running on Vercel!',
     timestamp: new Date().toISOString(),
+    platform: 'Vercel Serverless',
     features: [
-      'Auto-refresh on server start',
-      'Fresh questions every restart',
-      'Clean leaderboard every restart'
+      'Serverless auto-scaling',
+      'Manual refresh available',
+      'Firebase Firestore integration'
     ]
   });
 });
@@ -79,18 +93,23 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-// 404 handler
-app.use('*', (req, res) => {
+// 404 handler for API routes
+app.use('/api/*', (req, res) => {
   res.status(404).json({
     success: false,
     message: 'API endpoint not found'
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Quiz Competition Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
-  console.log(`🔥 Database: Firebase Firestore`);
-});
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Quiz Competition Server running on port ${PORT}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
+    console.log(`🔥 Database: Firebase Firestore`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
