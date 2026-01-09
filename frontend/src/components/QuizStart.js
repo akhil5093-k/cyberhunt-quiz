@@ -73,9 +73,8 @@ const QuizStart = ({ onStartQuiz, onShowLeaderboard }) => {
           <h3>📋 Quiz Details</h3>
           <ul>
             <li><strong>Questions:</strong> 20 Multiple Choice Questions</li>
-            <li><strong>Time Limit:</strong> 10 minutes (600 seconds)</li>
+            <li><strong>Time Limit:</strong> 8 minutes (480 seconds)</li>
             <li><strong>Topics:</strong> Computer Security, Internet Safety, Cyber Threats</li>
-            <li><strong>Level:</strong> Mixed difficulty (15 Easy + 5 Medium)</li>
             <li><strong>Navigation:</strong> You can go back and change your answers</li>
             <li><strong>Auto-Submit:</strong> Quiz will auto-submit when time runs out</li>
             <li><strong>Scoring:</strong> Each correct answer = 5 points (Max: 100 points)</li>
@@ -133,11 +132,6 @@ const QuizStart = ({ onStartQuiz, onShowLeaderboard }) => {
             <li>Submit your quiz before time runs out for best results</li>
             <li>Your score and ranking will be displayed immediately after submission</li>
           </ul>
-        </div>
-
-        {/* Admin Access Hint */}
-        <div className="admin-hint">
-          <small>💡 Press Ctrl+Shift+A for admin panel</small>
         </div>
       </div>
 

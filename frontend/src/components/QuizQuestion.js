@@ -18,7 +18,7 @@ const QuizQuestion = ({ userName, onQuizComplete, onBackToStart }) => {
   const [startTime] = useState(Date.now());
 
   // Quiz configuration
-  const QUIZ_DURATION = 10 * 60; // 10 minutes in seconds
+  const QUIZ_DURATION = 8 * 60; // 8 minutes in seconds
 
   // Load quiz questions on component mount
   useEffect(() => {

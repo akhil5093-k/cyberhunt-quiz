@@ -139,11 +139,8 @@ const Leaderboard = ({ onBackToStart }) => {
           <div className="no-data">
             <div className="no-data-icon">📊</div>
             <h3>No Results Yet</h3>
-            <p>Be the first to complete a quiz and claim the top spot!</p>
+            <p>No quiz results available at the moment.</p>
             <p>Results are updated in real-time.</p>
-            <button onClick={onBackToStart} className="btn">
-              Take the Quiz
-            </button>
           </div>
         ) : (
           <>
@@ -266,11 +263,8 @@ const Leaderboard = ({ onBackToStart }) => {
         {/* Action Buttons */}
         <div className="leaderboard-actions">
           <div className="button-group">
-            <button onClick={onBackToStart} className="btn">
-              🚀 Take Quiz
-            </button>
-            <button onClick={loadLeaderboard} className="btn btn-secondary">
-              🔄 Refresh
+            <button onClick={loadLeaderboard} className="btn btn-primary">
+              🔄 Refresh Leaderboard
             </button>
           </div>
         </div>

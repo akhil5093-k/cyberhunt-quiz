@@ -143,15 +143,8 @@ const Result = ({ result, userName, onBackToStart, onShowLeaderboard }) => {
         <div className="result-actions">
           <div className="button-group">
             <button 
-              onClick={onBackToStart}
-              className="btn"
-            >
-              🔄 Take Another Quiz
-            </button>
-            
-            <button 
               onClick={onShowLeaderboard}
-              className="btn btn-secondary"
+              className="btn btn-primary"
             >
               🏆 View Leaderboard
             </button>
