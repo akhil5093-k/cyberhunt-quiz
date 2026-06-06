@@ -2,7 +2,7 @@
 
 A complete full-stack quiz competition web application built with React, Node.js, Express, and MongoDB. Features a modern, responsive UI with real-time timer, question navigation, and leaderboard functionality.
 
-## 🚀 Features
+## Features
 
 ### Core Functionality
 - **20 Multiple Choice Questions** per quiz
@@ -31,7 +31,7 @@ A complete full-stack quiz competition web application built with React, Node.js
 - **Responsive CSS** with mobile-first design
 - **Production-ready** code structure
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 18** with functional components and hooks
