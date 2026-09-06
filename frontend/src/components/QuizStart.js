@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FirebaseAdmin from './FirebaseAdmin';
+import AdminLogin from './AdminLogin';
 
 /**
  * QuizStart Component - Landing page for the quiz application
@@ -9,6 +10,7 @@ const QuizStart = ({ onStartQuiz, onShowLeaderboard }) => {
   const [userName, setUserName] = useState('');
   const [error, setError] = useState('');
   const [showAdmin, setShowAdmin] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
 
   // Handle form submission to start quiz
   const handleSubmit = (e) => {
@@ -47,9 +49,9 @@ const QuizStart = ({ onStartQuiz, onShowLeaderboard }) => {
 
   // Handle admin panel access (secret key combination)
   const handleAdminAccess = (e) => {
-    // Press Ctrl+Shift+A to open admin panel
+    // Press Ctrl+Shift+A to open admin login
     if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-      setShowAdmin(true);
+      setShowAdminLogin(true);
     }
   };
 
@@ -135,11 +137,19 @@ const QuizStart = ({ onStartQuiz, onShowLeaderboard }) => {
           </ul>
         </div>
 
-        {/* Admin Access Hint */}
-        <div className="admin-hint">
-          <small>💡 Press Ctrl+Shift+A for admin panel</small>
+        {/* Admin Access Hint - hidden, shortcut still works */}
+        <div className="admin-hint" style={{ visibility: 'hidden' }}>
+          <small>Admin</small>
         </div>
       </div>
+
+      {/* Admin Login Gate */}
+      {showAdminLogin && (
+        <AdminLogin
+          onSuccess={() => { setShowAdminLogin(false); setShowAdmin(true); }}
+          onCancel={() => setShowAdminLogin(false)}
+        />
+      )}
 
       {/* Firebase Admin Panel */}
       {showAdmin && (
