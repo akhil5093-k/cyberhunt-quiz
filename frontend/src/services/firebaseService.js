@@ -39,16 +39,15 @@ export const firebaseService = {
 
       console.log(`📊 Found ${allQuestions.length} questions in Firestore`);
 
-      if (allQuestions.length < 20) {
-        throw new Error(`Not enough questions in database. Found ${allQuestions.length}, need at least 20.`);
+      if (allQuestions.length < 1) {
+        throw new Error(`No questions found in database. Please add questions via the admin panel.`);
       }
 
-      // Randomize and take first 20 questions
+      // Randomize all questions
       const shuffled = allQuestions.sort(() => 0.5 - Math.random());
-      const selectedQuestions = shuffled.slice(0, 20);
 
       // Format questions for the quiz interface
-      const formattedQuestions = selectedQuestions.map((q, index) => ({
+      const formattedQuestions = shuffled.map((q, index) => ({
         id: q.id,
         questionNumber: index + 1,
         questionText: q.question || q.questionText, // Support both field names
@@ -83,8 +82,8 @@ export const firebaseService = {
         throw new Error('Invalid submission data');
       }
 
-      if (answers.length !== 20) {
-        throw new Error('Quiz must have exactly 20 answers');
+      if (answers.length < 1) {
+        throw new Error('No answers provided');
       }
 
       // Fetch the original questions to calculate score
@@ -132,13 +131,14 @@ export const firebaseService = {
         });
       }
 
-      const wrongAnswers = 20 - correctAnswers;
-      const finalScore = Math.round((correctAnswers / 20) * 100);
+      const totalQuestions = answers.length;
+      const wrongAnswers = totalQuestions - correctAnswers;
+      const finalScore = Math.round((correctAnswers / totalQuestions) * 100);
 
       // Prepare result document
       const result = {
         userName: userName.trim(),
-        totalQuestions: 20,
+        totalQuestions,
         correctAnswers,
         wrongAnswers,
         finalScore,

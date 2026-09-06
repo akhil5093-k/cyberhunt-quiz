@@ -36,11 +36,11 @@ const QuizQuestion = ({ userName, onQuizComplete, onBackToStart }) => {
       console.log('📊 Loading questions...');
       const fetchedQuestions = await firebaseService.fetchQuestions();
       
-      if (fetchedQuestions && fetchedQuestions.length === 20) {
+      if (fetchedQuestions && fetchedQuestions.length > 0) {
         setQuestions(fetchedQuestions);
-        console.log('✅ Questions loaded successfully');
+        console.log(`✅ ${fetchedQuestions.length} questions loaded successfully`);
       } else {
-        throw new Error('Invalid questions data received');
+        throw new Error('No questions found');
       }
     } catch (err) {
       console.error('❌ Failed to load questions:', err);
